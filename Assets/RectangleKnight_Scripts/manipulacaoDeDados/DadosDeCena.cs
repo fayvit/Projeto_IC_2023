@@ -151,7 +151,7 @@ public class ContainerDeDadosDeCena
 
         string s = SceneManager.GetActiveScene().name;
 
-        Debug.Log(s);
+        //Debug.Log(s);
         return GetSceneDates(s);
     }
 

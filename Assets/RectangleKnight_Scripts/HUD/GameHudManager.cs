@@ -144,9 +144,8 @@ public class GameHudManager : MonoBehaviour
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)obj;
 
-        lifeBar.fillAmount = ((float)(int)ssge.MyObject[0]) / maxBasicLifeBar;
+        lifeBar.fillAmount = ((float)(int)ssge.MyObject[0])/ maxBasicLifeBar;
 
-        
         PreencherBarrasDeUpdate(lifeBarUpdates, addLifeBarAmount, maxBasicLifeBar, (int)ssge.MyObject[0], (int)ssge.MyObject[1]);
         
     }

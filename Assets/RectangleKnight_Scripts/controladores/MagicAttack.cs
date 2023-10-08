@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Assets.RectangleKnight_Scripts.controladores;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -55,10 +56,13 @@ public class MagicAttack
     }
 
     // Update is called once per frame
-    public void Update(Controlador controlador,int pontosDeMana,bool noChao,DadosDoJogador dados)
+    //public void Update(Controlador controlador,int pontosDeMana,bool noChao,DadosDoJogador dados)
+    public void Update(NewCommandReader controlador,int pontosDeMana,bool noChao,DadosDoJogador dados)
+
     {
 
-        if (CommandReader.PressionadoBotao(2, controlador) && noChao)
+        //if (CommandReader.PressionadoBotao(2, controlador) && noChao)
+        if (controlador.magicHold && noChao)
         {
             if(!particulaDaCura.activeSelf)
                 tempoEmRecuperacao -= Time.deltaTime;
@@ -89,15 +93,15 @@ public class MagicAttack
                 }
             }
         }
-        else if (!CommandReader.PressionadoBotao(2, controlador))
+        else if (!controlador.magicHold)
         {
             tempoEmRecuperacao -= Time.deltaTime;
         }
         
 
-        if (CommandReader.ButtonUp(2, controlador))
+        if (controlador.magicAttack)
         {
-            if (dados.TemDownArrowJump && CommandReader.VetorDirecao(controlador).z < -0.25f && !noChao)
+            if (dados.TemDownArrowJump && controlador.move.z < -0.25f && !noChao)
             {
                 VerifiqueDownArrowJump(pontosDeMana);
             }else if (TempoPressionado > tempoDaParticula)
