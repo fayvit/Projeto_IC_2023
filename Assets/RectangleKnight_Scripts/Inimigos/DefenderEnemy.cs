@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,7 @@ public class DefenderEnemy : BaseMoveRigidbody
     protected override void Start()
     {
         EventAgregator.AddListener(EventKey.animationPointCheck, CheckAnimationPoint);
+        EventAgregator.AddListener(EventKey.applyForceInEnemy, OnApplyForceInEnemy);
         Invoke("TestadorDePosicao", 2);
         base.Start();
     }
@@ -29,7 +31,17 @@ public class DefenderEnemy : BaseMoveRigidbody
     protected override void OnDestroy()
     {
         EventAgregator.RemoveListener(EventKey.animationPointCheck, CheckAnimationPoint);
+        EventAgregator.RemoveListener(EventKey.applyForceInEnemy, OnApplyForceInEnemy);
         base.OnDestroy();
+    }
+
+    private void OnApplyForceInEnemy(IGameEvent e)
+    {
+        Debug.Log("Por Aqui");
+        StandardSendGameEvent ssge = (StandardSendGameEvent)e;
+        float forDeslc = (float)ssge.MyObject[0];
+        float tempDesl = (float)ssge.MyObject[1];
+        Mov.ApplyForce((forDeslc-Mov.Velocity.magnitude* Mathf.Sign(transform.localScale.x)) * Mathf.Sign(transform.localScale.x) * Vector3.right, tempDesl);
     }
 
     void CheckAnimationPoint(IGameEvent e)

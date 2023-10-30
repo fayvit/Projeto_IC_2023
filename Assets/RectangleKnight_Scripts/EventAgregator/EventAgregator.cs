@@ -156,5 +156,6 @@ public enum EventKey
     requestShowInterstial,
     prepareInterstial,
     googlePlayTrySingInFinish,
-    testSendString
+    testSendString,
+    applyForceInEnemy
 }

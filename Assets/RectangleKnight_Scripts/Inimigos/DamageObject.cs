@@ -5,6 +5,8 @@ using UnityEngine;
 public class DamageObject : MonoBehaviour
 {
     [SerializeField] private int valorDeDano = 25;
+    [SerializeField] private bool defensavel = true;
+    [SerializeField] private bool aparavel = false;
     private void OnTriggerEnter2D(Collider2D collision)
     {
 
@@ -14,7 +16,7 @@ public class DamageObject : MonoBehaviour
             if (UnicidadeDoPlayer.Verifique(collision))
             {
                 bool sentidoPositivo = transform.position.x - collision.transform.position.x > 0;
-                EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.heroDamage, sentidoPositivo, valorDeDano));
+                EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.heroDamage, sentidoPositivo, valorDeDano,aparavel,defensavel));
             }
         }
     }
