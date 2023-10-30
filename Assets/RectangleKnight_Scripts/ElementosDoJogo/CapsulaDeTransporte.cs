@@ -16,6 +16,7 @@ public class CapsulaDeTransporte : AtivadorDeBotao
 
     private enum EstadoDaqui
     {
+        //emEspera
         emEspera,
         menuAberto
     }
