@@ -7,6 +7,9 @@ TagManager:
   - attackCollisor
   - triggerGeral
   - Enemy
+  - startBlock
+  - endBlock
+  - musicName
   layers:
   - Default
   - TransparentFX
