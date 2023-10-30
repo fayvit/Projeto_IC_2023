@@ -12795,8 +12795,18 @@ PrefabInstance:
       objectReference: {fileID: 1302759221}
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
+      propertyPath: forcaDaRepulsaoNoInimigo
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
+        type: 3}
       propertyPath: parryM.tempoAntesDoParry
       value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
+        type: 3}
+      propertyPath: tempoDaRepulsaoNoInimigo
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}

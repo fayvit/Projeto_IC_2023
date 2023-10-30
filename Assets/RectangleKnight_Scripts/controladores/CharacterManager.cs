@@ -430,32 +430,37 @@ public class CharacterManager : MonoBehaviour
         Instantiate(enemyParticleDamage, obj.Sender.transform.position, Quaternion.identity), 5);
     }
 
-    [SerializeField] private float x;
-    [SerializeField] private float y;
+    [SerializeField] private float forcaDaRepulsaoNoInimigo;
+    [SerializeField] private float tempoDaRepulsaoNoInimigo;
     private void OnHeroDamage(IGameEvent obj)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)obj;
         bool aparavel = false;
         bool defensavel = true;
+        bool viradoCerto = false;
+
         if (ssge.MyObject.Length > 2 && ssge.MyObject[2].GetType() == typeof(bool))
             aparavel = (bool)ssge.MyObject[2];
         if (ssge.MyObject.Length > 3)
             defensavel = (bool)ssge.MyObject[3];
 
+        if (ssge.MyObject.Length > 4 && ssge.MyObject[4].GetType() == typeof(bool))
+            viradoCerto = ((bool)ssge.MyObject[4]?1:-1)==Mathf.Sign(transform.localScale.x);
+
         //Debug.Log(ssge.MyObject[2].GetType()+" meu tipo é:"+(ssge.MyObject[2] is bool)+" : "+(ssge.MyObject[2] is Vector3));
-        if (aparavel && parryM.ParryFrame)
+        if (aparavel && parryM.ParryFrame&& viradoCerto)
         {
 
             float sign = Mathf.Sign( transform.position.x - obj.Sender.transform.position.x);
             InstanciaLigando.Instantiate((GameObject)Resources.Load("impactAnimationParry"), 0.5f * (transform.position + obj.Sender.transform.position), .35f);
-            EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, x,y));
+            EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, forcaDaRepulsaoNoInimigo,tempoDaRepulsaoNoInimigo));
             EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestCharRepulse, Vector3.right* sign*500, .35f));
             new MyInvokeMethod().InvokeNoTempoDeJogo(() =>
             {
                 EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.disparaSom, SoundEffectID.Break));
             }, 0.2f);
         }
-        else if (defensavel && parryM.InDefense)
+        else if (defensavel && parryM.InDefense&& viradoCerto)
         {
             SoundOnAttack.SoundAnimationAndRepulse(obj.Sender.transform, 400, .45f, (transform.position + obj.Sender.transform.position) * .5f);
             EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, 1000f, .75f));
