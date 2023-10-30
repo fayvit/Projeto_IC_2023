@@ -30,6 +30,7 @@ public class MovimentacaoBasica
     private bool estavaNoChao;
     private bool retornoDonoChao;
 
+    public bool AplicandoForca => aplicandoForca;
     public Vector3 Velocity
     {
         get { return m_Rigidbody2D.velocity;}

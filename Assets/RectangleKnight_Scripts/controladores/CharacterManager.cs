@@ -33,7 +33,7 @@ public class CharacterManager : MonoBehaviour
     private TeleportDamage tDamage = new TeleportDamage();
     private ExternalPositionRequest positionRequest;
 
-    public Controlador Control { get => GlobalController.g.Control;}
+    public Controlador Control { get => GlobalController.g.Control; }
     public DadosDoJogador Dados { get => dados; set => dados = value; }
     public EstadoDePersonagem Estado { get => estado; private set => estado = value; }
     public int CorDaEspadaselecionada { get => atk.CorDeEspadaSelecionada; }
@@ -50,7 +50,7 @@ public class CharacterManager : MonoBehaviour
         emDano = new EstouEmDano(GetComponent<Rigidbody2D>());
 
         EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.starterHudForTest, dados));
-        
+
 
         EventAgregator.AddListener(EventKey.heroDamage, OnHeroDamage);
         EventAgregator.AddListener(EventKey.enemyContactDamage, OnEnemyContactDamage);
@@ -110,7 +110,7 @@ public class CharacterManager : MonoBehaviour
         EventAgregator.RemoveListener(EventKey.fechouPainelSuspenso, OnCloseExternalPanel);
         EventAgregator.RemoveListener(EventKey.getEmblem, OnGetEmblem);
         EventAgregator.RemoveListener(EventKey.getUpdateGeometry, OnGetUpdateGeometry);
-      //  EventAgregator.RemoveListener(EventKey.getPentagon, OnGetPentagon);
+        //  EventAgregator.RemoveListener(EventKey.getPentagon, OnGetPentagon);
         EventAgregator.RemoveListener(EventKey.inicializaDisparaTexto, OnOpenExternalPanel);
         EventAgregator.RemoveListener(EventKey.finalizaDisparaTexto, OnCloseExternalPanel);
         EventAgregator.RemoveListener(EventKey.getNotch, OnGetNotch);
@@ -160,7 +160,7 @@ public class CharacterManager : MonoBehaviour
             dados.MaxMana = dados.BaseMaxMana + dados.PentagonosCompletados * dados.AddMagicBarAmount;
             dados.PontosDeMana = dados.MaxMana;
             dados.PartesDePentagonosObtidas = 0;
-            
+
         }
         else
         {
@@ -189,7 +189,7 @@ public class CharacterManager : MonoBehaviour
     private void OnGetItem(IGameEvent e)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)e;
-        ItemBase.AddItem(dados,(NomeItem)ssge.MyObject[0],(int)ssge.MyObject[1]);
+        ItemBase.AddItem(dados, (NomeItem)ssge.MyObject[0], (int)ssge.MyObject[1]);
     }
 
     private void OnGetStamp(IGameEvent e)
@@ -212,7 +212,7 @@ public class CharacterManager : MonoBehaviour
 
         estado = EstadoDePersonagem.movimentoRequerido;
 
-        positionRequest.RequererMovimento(ssge.Sender,(Vector3)ssge.MyObject[0],4);
+        positionRequest.RequererMovimento(ssge.Sender, (Vector3)ssge.MyObject[0], 4);
 
         atk.ResetaAttackManager();
         magic.RetornarAoModoDeEspera();
@@ -223,7 +223,7 @@ public class CharacterManager : MonoBehaviour
     private void OnRequestRepulse(IGameEvent obj)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)obj;
-        mov.ApplyForce((Vector3)ssge.MyObject[0],(float)ssge.MyObject[1]);
+        mov.ApplyForce((Vector3)ssge.MyObject[0], (float)ssge.MyObject[1]);
     }
 
     private void OnRequestKick(IGameEvent e)
@@ -277,7 +277,7 @@ public class CharacterManager : MonoBehaviour
     private void OnOpenExternalPanel(IGameEvent e)
     {
         RetornarComponentesAoPAdrao();
-        mov.AplicadorDeMovimentos(Vector3.zero);        
+        mov.AplicadorDeMovimentos(Vector3.zero);
         estado = EstadoDePersonagem.parado;
     }
 
@@ -320,11 +320,11 @@ public class CharacterManager : MonoBehaviour
         dados.ultimoCheckPoint = new UltimoCheckPoint()
         {
             nomesDasCenas = (NomesCenas[])ssge.MyObject[0],
-            Pos = MelhoraPos.NovaPos(e.Sender.transform.position,0.1f)
+            Pos = MelhoraPos.NovaPos(e.Sender.transform.position, 0.1f)
         };
 
         SaveDatesManager.SalvarAtualizandoDados();
-        
+
     }
 
     private void OnRequestFillDates(IGameEvent e)
@@ -335,7 +335,7 @@ public class CharacterManager : MonoBehaviour
         if (S == null)
         {
             Dados = new DadosDoJogador();
-            transform.position = new Vector3(-8,-2,0);
+            transform.position = new Vector3(-8, -2, 0);
         }
         else
         {
@@ -346,7 +346,7 @@ public class CharacterManager : MonoBehaviour
         particulaDoDanoMortal.SetActive(false);
         particulaDoMorrendo.SetActive(false);
         derrota.DesligarLosangulo();
-        atk.ChangeSwirdColor((int)dados.CorDeEspadaSelecionada); 
+        atk.ChangeSwirdColor((int)dados.CorDeEspadaSelecionada);
         /*
         EventAgregator.Publish(new StandardSendGameEvent(EventKey.changeMoneyAmount, Dados.Dinheiro));
         EventAgregator.Publish(new StandardSendGameEvent(EventKey.changeLifePoints, Dados.PontosDeVida,Dados.MaxVida));
@@ -379,7 +379,7 @@ public class CharacterManager : MonoBehaviour
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)e;
         Dados.ConsomeMana((int)ssge.MyObject[0]);
-        magic.InstanciaProjetil(transform.position,Mathf.Sign(transform.localScale.x));
+        magic.InstanciaProjetil(transform.position, Mathf.Sign(transform.localScale.x));
         EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.changeMagicPoints, Dados.PontosDeMana, Dados.MaxMana));
     }
 
@@ -412,7 +412,7 @@ public class CharacterManager : MonoBehaviour
         else
         {
             EventAgregator.Publish(new StandardSendGameEvent(obj.Sender, EventKey.sendDamageForEnemy, Dados.AtaqueBasico));
-            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestShakeCam,ShakeAxis.z,2,1f));
+            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestShakeCam, ShakeAxis.z, 2, 1f));
 
             Dados.AdicionarMana(1);
             EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.changeMagicPoints, Dados.PontosDeMana, Dados.MaxMana));
@@ -422,7 +422,7 @@ public class CharacterManager : MonoBehaviour
 
         if ((string)ssge.MyObject[0] == "colisorDoAtaquebaixo")
         {
-            
+
             mov.JumpForce();
         }
 
@@ -430,8 +430,12 @@ public class CharacterManager : MonoBehaviour
         Instantiate(enemyParticleDamage, obj.Sender.transform.position, Quaternion.identity), 5);
     }
 
+    [Header("Variaveis criadas para auxiliar na repulsao do inimigo pelo Parry")]
     [SerializeField] private float forcaDaRepulsaoNoInimigo;
     [SerializeField] private float tempoDaRepulsaoNoInimigo;
+    [SerializeField] private float forcaDaRepulsaoNoHeroi = 500;
+    [SerializeField] private float tempoDaRepulsaoNoHeroi = .35f;
+    //[Header("-----------------------------------------------------------------")]
     private void OnHeroDamage(IGameEvent obj)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)obj;
@@ -454,7 +458,7 @@ public class CharacterManager : MonoBehaviour
             float sign = Mathf.Sign( transform.position.x - obj.Sender.transform.position.x);
             InstanciaLigando.Instantiate((GameObject)Resources.Load("impactAnimationParry"), 0.5f * (transform.position + obj.Sender.transform.position), .35f);
             EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, forcaDaRepulsaoNoInimigo,tempoDaRepulsaoNoInimigo));
-            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestCharRepulse, Vector3.right* sign*500, .35f));
+            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestCharRepulse, Vector3.right* sign* forcaDaRepulsaoNoHeroi, tempoDaRepulsaoNoHeroi));
             new MyInvokeMethod().InvokeNoTempoDeJogo(() =>
             {
                 EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.disparaSom, SoundEffectID.Break));
@@ -463,7 +467,7 @@ public class CharacterManager : MonoBehaviour
         else if (defensavel && parryM.InDefense&& viradoCerto)
         {
             SoundOnAttack.SoundAnimationAndRepulse(obj.Sender.transform, 400, .45f, (transform.position + obj.Sender.transform.position) * .5f);
-            EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, 1000f, .75f));
+            EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, forcaDaRepulsaoNoInimigo, tempoDaRepulsaoNoInimigo));
             //EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.disparaSom, SoundEffectID.exitCheckPoint));
         }
         else

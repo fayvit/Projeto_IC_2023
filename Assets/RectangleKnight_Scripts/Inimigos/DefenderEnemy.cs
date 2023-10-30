@@ -55,7 +55,9 @@ public class DefenderEnemy : BaseMoveRigidbody
                 case "a":
                 case "b":
                 case "c":
-                    Mov.ApplyForce(forDesl * Mathf.Sign(-transform.localScale.x) * Vector3.right,1);
+                    if(!Mov.AplicandoForca)
+                        Mov.ApplyForce(forDesl * Mathf.Sign(-transform.localScale.x) * Vector3.right,1);
+
                     EventAgregator.Publish(new StandardSendGameEvent(EventKey.disparaSom, SoundEffectID.EnemySlash));
                 break;
                 case "d":
