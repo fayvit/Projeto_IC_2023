@@ -258,6 +258,7 @@
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\MovimentacaoBasica.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\MudeCena.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\MudeCenaComAcao.cs" />
+    <Compile Include="Assets\RectangleKnight_Scripts\controladores\MudeCenaComSpawnPoint.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\MudeCenaLocal.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\MusicaDeFundo.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\N3ds\N3DS_KeysDic.cs" />
@@ -271,9 +272,11 @@
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\RestritorDeCamLimits.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\SceneLoader.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\SoundEffectsManager.cs" />
+    <Compile Include="Assets\RectangleKnight_Scripts\controladores\StaticMudeCenaComSpawnPoint.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\SwordColorManager.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\TeleportDamage.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\controladores\TemporizedForwardProjectle.cs" />
+    <Compile Include="Assets\RectangleKnight_Scripts\controladores\mudeCenaExterno\SpawnPointMark.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\copyMap\BuscadorDeEnderecoDeArquivo.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\copyMap\ContainerPlusMap.cs" />
     <Compile Include="Assets\RectangleKnight_Scripts\copyMap\JsonMapContainer.cs" />

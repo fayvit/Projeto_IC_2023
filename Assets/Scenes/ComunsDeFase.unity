@@ -12780,9 +12780,19 @@ PrefabInstance:
       objectReference: {fileID: 8300000, guid: 2b6effac3a1c51448969b48489095502, type: 3}
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
+      propertyPath: forcaDaRepulsaoNoHeroi
+      value: 550
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
+        type: 3}
       propertyPath: magic.somDownArrowChao
       value: 
       objectReference: {fileID: 8300000, guid: edb5918e0cdde874abfd1f9613e6f583, type: 3}
+    - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
+        type: 3}
+      propertyPath: tempoDaRepulsaoNoHeroi
+      value: 0.13
+      objectReference: {fileID: 0}
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
       propertyPath: dados._temDownArrowJump
@@ -12796,7 +12806,7 @@ PrefabInstance:
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
       propertyPath: forcaDaRepulsaoNoInimigo
-      value: 500
+      value: 690
       objectReference: {fileID: 0}
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
@@ -12806,7 +12816,7 @@ PrefabInstance:
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
       propertyPath: tempoDaRepulsaoNoInimigo
-      value: 0.5
+      value: 0.13
       objectReference: {fileID: 0}
     - target: {fileID: 1215035467913052041, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
@@ -12952,6 +12962,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215035468298857011, guid: 1c976eed124ef8b45b88afe7f5b87352,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1215035468298857015, guid: 1c976eed124ef8b45b88afe7f5b87352,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1215035469408002165, guid: 1c976eed124ef8b45b88afe7f5b87352,
         type: 3}
