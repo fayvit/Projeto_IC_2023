@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using Assets.RectangleKnight_Scripts.controladores;
 using UnityEngine;
 
 public class CharacterManager : MonoBehaviour
@@ -14,8 +13,10 @@ public class CharacterManager : MonoBehaviour
     [SerializeField] private PiscaInvunerabilidade piscaI;
     [SerializeField] private DashMovement dash;
     [SerializeField] private DerrotaDoJogador derrota;
+    [SerializeField] private ParryManager parryM;
 
     [SerializeField] private EstadoDePersonagem estado = EstadoDePersonagem.naoIniciado;
+    [SerializeField] private NewCommandReader command;
 
     [SerializeField] private GameObject heroParticleDamage;
     [SerializeField] private GameObject enemyParticleDamage;
@@ -32,7 +33,7 @@ public class CharacterManager : MonoBehaviour
     private TeleportDamage tDamage = new TeleportDamage();
     private ExternalPositionRequest positionRequest;
 
-    public Controlador Control { get => GlobalController.g.Control;}
+    public Controlador Control { get => GlobalController.g.Control; }
     public DadosDoJogador Dados { get => dados; set => dados = value; }
     public EstadoDePersonagem Estado { get => estado; private set => estado = value; }
     public int CorDaEspadaselecionada { get => atk.CorDeEspadaSelecionada; }
@@ -44,11 +45,12 @@ public class CharacterManager : MonoBehaviour
         positionRequest = new ExternalPositionRequest(transform, mov);
         mov.Iniciar(transform);
         dash.IniciarCampos(transform);
+        parryM.Start();
 
         emDano = new EstouEmDano(GetComponent<Rigidbody2D>());
 
         EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.starterHudForTest, dados));
-        
+
 
         EventAgregator.AddListener(EventKey.heroDamage, OnHeroDamage);
         EventAgregator.AddListener(EventKey.enemyContactDamage, OnEnemyContactDamage);
@@ -108,7 +110,7 @@ public class CharacterManager : MonoBehaviour
         EventAgregator.RemoveListener(EventKey.fechouPainelSuspenso, OnCloseExternalPanel);
         EventAgregator.RemoveListener(EventKey.getEmblem, OnGetEmblem);
         EventAgregator.RemoveListener(EventKey.getUpdateGeometry, OnGetUpdateGeometry);
-      //  EventAgregator.RemoveListener(EventKey.getPentagon, OnGetPentagon);
+        //  EventAgregator.RemoveListener(EventKey.getPentagon, OnGetPentagon);
         EventAgregator.RemoveListener(EventKey.inicializaDisparaTexto, OnOpenExternalPanel);
         EventAgregator.RemoveListener(EventKey.finalizaDisparaTexto, OnCloseExternalPanel);
         EventAgregator.RemoveListener(EventKey.getNotch, OnGetNotch);
@@ -158,7 +160,7 @@ public class CharacterManager : MonoBehaviour
             dados.MaxMana = dados.BaseMaxMana + dados.PentagonosCompletados * dados.AddMagicBarAmount;
             dados.PontosDeMana = dados.MaxMana;
             dados.PartesDePentagonosObtidas = 0;
-            
+
         }
         else
         {
@@ -187,7 +189,7 @@ public class CharacterManager : MonoBehaviour
     private void OnGetItem(IGameEvent e)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)e;
-        ItemBase.AddItem(dados,(NomeItem)ssge.MyObject[0],(int)ssge.MyObject[1]);
+        ItemBase.AddItem(dados, (NomeItem)ssge.MyObject[0], (int)ssge.MyObject[1]);
     }
 
     private void OnGetStamp(IGameEvent e)
@@ -210,7 +212,7 @@ public class CharacterManager : MonoBehaviour
 
         estado = EstadoDePersonagem.movimentoRequerido;
 
-        positionRequest.RequererMovimento(ssge.Sender,(Vector3)ssge.MyObject[0],4);
+        positionRequest.RequererMovimento(ssge.Sender, (Vector3)ssge.MyObject[0], 4);
 
         atk.ResetaAttackManager();
         magic.RetornarAoModoDeEspera();
@@ -221,7 +223,7 @@ public class CharacterManager : MonoBehaviour
     private void OnRequestRepulse(IGameEvent obj)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)obj;
-        mov.ApplyForce((Vector3)ssge.MyObject[0],(float)ssge.MyObject[1]);
+        mov.ApplyForce((Vector3)ssge.MyObject[0], (float)ssge.MyObject[1]);
     }
 
     private void OnRequestKick(IGameEvent e)
@@ -275,7 +277,7 @@ public class CharacterManager : MonoBehaviour
     private void OnOpenExternalPanel(IGameEvent e)
     {
         RetornarComponentesAoPAdrao();
-        mov.AplicadorDeMovimentos(Vector3.zero);        
+        mov.AplicadorDeMovimentos(Vector3.zero);
         estado = EstadoDePersonagem.parado;
     }
 
@@ -318,11 +320,11 @@ public class CharacterManager : MonoBehaviour
         dados.ultimoCheckPoint = new UltimoCheckPoint()
         {
             nomesDasCenas = (NomesCenas[])ssge.MyObject[0],
-            Pos = MelhoraPos.NovaPos(e.Sender.transform.position,0.1f)
+            Pos = MelhoraPos.NovaPos(e.Sender.transform.position, 0.1f)
         };
 
         SaveDatesManager.SalvarAtualizandoDados();
-        
+
     }
 
     private void OnRequestFillDates(IGameEvent e)
@@ -333,7 +335,7 @@ public class CharacterManager : MonoBehaviour
         if (S == null)
         {
             Dados = new DadosDoJogador();
-            transform.position = new Vector3(-8,-2,0);
+            transform.position = new Vector3(-8, -2, 0);
         }
         else
         {
@@ -344,7 +346,7 @@ public class CharacterManager : MonoBehaviour
         particulaDoDanoMortal.SetActive(false);
         particulaDoMorrendo.SetActive(false);
         derrota.DesligarLosangulo();
-        atk.ChangeSwirdColor((int)dados.CorDeEspadaSelecionada); 
+        atk.ChangeSwirdColor((int)dados.CorDeEspadaSelecionada);
         /*
         EventAgregator.Publish(new StandardSendGameEvent(EventKey.changeMoneyAmount, Dados.Dinheiro));
         EventAgregator.Publish(new StandardSendGameEvent(EventKey.changeLifePoints, Dados.PontosDeVida,Dados.MaxVida));
@@ -377,7 +379,7 @@ public class CharacterManager : MonoBehaviour
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)e;
         Dados.ConsomeMana((int)ssge.MyObject[0]);
-        magic.InstanciaProjetil(transform.position,Mathf.Sign(transform.localScale.x));
+        magic.InstanciaProjetil(transform.position, Mathf.Sign(transform.localScale.x));
         EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.changeMagicPoints, Dados.PontosDeMana, Dados.MaxMana));
     }
 
@@ -410,7 +412,7 @@ public class CharacterManager : MonoBehaviour
         else
         {
             EventAgregator.Publish(new StandardSendGameEvent(obj.Sender, EventKey.sendDamageForEnemy, Dados.AtaqueBasico));
-            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestShakeCam,ShakeAxis.z,2,1f));
+            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestShakeCam, ShakeAxis.z, 2, 1f));
 
             Dados.AdicionarMana(1);
             EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.changeMagicPoints, Dados.PontosDeMana, Dados.MaxMana));
@@ -420,7 +422,7 @@ public class CharacterManager : MonoBehaviour
 
         if ((string)ssge.MyObject[0] == "colisorDoAtaquebaixo")
         {
-            
+
             mov.JumpForce();
         }
 
@@ -428,11 +430,48 @@ public class CharacterManager : MonoBehaviour
         Instantiate(enemyParticleDamage, obj.Sender.transform.position, Quaternion.identity), 5);
     }
 
+    [Header("Variaveis criadas para auxiliar na repulsao do inimigo pelo Parry")]
+    [SerializeField] private float forcaDaRepulsaoNoInimigo;
+    [SerializeField] private float tempoDaRepulsaoNoInimigo;
+    [SerializeField] private float forcaDaRepulsaoNoHeroi = 500;
+    [SerializeField] private float tempoDaRepulsaoNoHeroi = .35f;
+    //[Header("-----------------------------------------------------------------")]
     private void OnHeroDamage(IGameEvent obj)
     {
         StandardSendGameEvent ssge = (StandardSendGameEvent)obj;
+        bool aparavel = false;
+        bool defensavel = true;
+        bool viradoCerto = false;
 
-        if ((!piscaI.Invuneravel || ssge.MyObject.Length > 2) && Dados.PontosDeVida > 0)
+        if (ssge.MyObject.Length > 2 && ssge.MyObject[2].GetType() == typeof(bool))
+            aparavel = (bool)ssge.MyObject[2];
+        if (ssge.MyObject.Length > 3)
+            defensavel = (bool)ssge.MyObject[3];
+
+        if (ssge.MyObject.Length > 4 && ssge.MyObject[4].GetType() == typeof(bool))
+            viradoCerto = ((bool)ssge.MyObject[4]?1:-1)==Mathf.Sign(transform.localScale.x);
+
+        //Debug.Log(ssge.MyObject[2].GetType()+" meu tipo é:"+(ssge.MyObject[2] is bool)+" : "+(ssge.MyObject[2] is Vector3));
+        if (aparavel && parryM.ParryFrame&& viradoCerto)
+        {
+
+            float sign = Mathf.Sign( transform.position.x - obj.Sender.transform.position.x);
+            InstanciaLigando.Instantiate((GameObject)Resources.Load("impactAnimationParry"), 0.5f * (transform.position + obj.Sender.transform.position), .35f);
+            EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, forcaDaRepulsaoNoInimigo,tempoDaRepulsaoNoInimigo));
+            EventAgregator.Publish(new StandardSendGameEvent(EventKey.requestCharRepulse, Vector3.right* sign* forcaDaRepulsaoNoHeroi, tempoDaRepulsaoNoHeroi));
+            new MyInvokeMethod().InvokeNoTempoDeJogo(() =>
+            {
+                EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.disparaSom, SoundEffectID.Break));
+            }, 0.2f);
+        }
+        else if (defensavel && parryM.InDefense&& viradoCerto)
+        {
+            SoundOnAttack.SoundAnimationAndRepulse(obj.Sender.transform, 400, .45f, (transform.position + obj.Sender.transform.position) * .5f);
+            EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.applyForceInEnemy, forcaDaRepulsaoNoInimigo, tempoDaRepulsaoNoInimigo));
+            //EventAgregator.Publish(new StandardSendGameEvent(gameObject, EventKey.disparaSom, SoundEffectID.exitCheckPoint));
+        }
+        else
+        if ((!piscaI.Invuneravel || (ssge.MyObject.Length > 2 && ssge.MyObject[2] is Vector3)) && Dados.PontosDeVida > 0)
         {
 
 
@@ -453,7 +492,7 @@ public class CharacterManager : MonoBehaviour
                 estado = EstadoDePersonagem.emDano;
                 EventAgregator.Publish(new StandardSendGameEvent(EventKey.disparaSom, somDoDano));
 
-                if (ssge.MyObject.Length > 2)
+                if (ssge.MyObject.Length > 2 && ssge.MyObject[2] is Vector3)
                 {
                     tDamage.agendado = true;
                     tDamage.pos = (Vector3)ssge.MyObject[2];
@@ -504,6 +543,10 @@ public class CharacterManager : MonoBehaviour
         dash.RetornarAoEstadoDeEspera();
     }
 
+    void IniciarDefesa()
+    {
+        estado = EstadoDePersonagem.defesa;
+    }
     // Update is called once per frame
     void Update()
     {
@@ -519,17 +562,25 @@ public class CharacterManager : MonoBehaviour
                     #region aPasseio
 
                     bool noChao = mov.NoChao;
-                    Vector3 V = CommandReader.VetorDirecao(Control);
-                    mov.AplicadorDeMovimentos(V, CommandReader.ButtonDown(1, Control),dados.TemDoubleJump);
+                    //Vector3 V = CommandReader.VetorDirecao(Control);
+                    //mov.AplicadorDeMovimentos(V, CommandReader.ButtonDown(1, Control),dados.TemDoubleJump);
+                    mov.AplicadorDeMovimentos(command.move, command.startJump,dados.TemDoubleJump);
 
                     atk.UpdateAttack();
 
-                    if (CommandReader.ButtonDown(0, Control))
+                    //if (CommandReader.ButtonDown(0, Control))
+                    if (command.attack)
                     {
                         BotaoAtacar();
                     }
 
-                    magic.Update(Control, Dados.PontosDeMana, noChao, dados);
+                    if (command.defense)
+                    {
+                        IniciarDefesa();
+                    }
+
+                    //magic.Update(Control, Dados.PontosDeMana, noChao, dados);
+                    magic.Update(command, Dados.PontosDeMana, noChao, dados);
 
                     if (magic.EmTempoDeRecarga && magic.CustoParaRecarga <= Dados.PontosDeMana)
                     {
@@ -537,31 +588,48 @@ public class CharacterManager : MonoBehaviour
                         mov.AplicadorDeMovimentos(Vector3.zero,false,false);
                     }
 
-                    if (dados.TemDash && dash.PodeDarDash(noChao) && CommandReader.ButtonDown(3, Control) )
+                    //if (dados.TemDash && dash.PodeDarDash(noChao) && CommandReader.ButtonDown(3, Control) )
+                    if (dados.TemDash && dash.PodeDarDash(noChao) && command.dash)
                     {
                         dash.Start(Mathf.Sign(transform.localScale.x),noChao);
                         estado = EstadoDePersonagem.inDash;
                     }
 
-                    if (CommandReader.ButtonDown(4, Control))
+                    //if (CommandReader.ButtonDown(4, Control))
+                    if (command.mudaEspadaMenos)
                         atk.ModificouCorDaEspada(-1,dados);
-                    else if (CommandReader.ButtonDown(5, Control))
+                    //else if (CommandReader.ButtonDown(5, Control))
+                    else if (command.mudaEspadaMais)
                         atk.ModificouCorDaEspada(1,dados);
 
-                    if (V.z > 0.75f && noChao)
+                    //if (V.z > 0.75f && noChao)
+                    if (command.move.z > 0.75f && noChao)
                     {
                         mov.AplicadorDeMovimentos(Vector3.zero, false, false);
                         ActionManager.VerificaAcao();
                     }
                     #endregion
                 break;
+                case EstadoDePersonagem.defesa:
+                    if(mov.NoChao)
+                        mov.AplicadorDeMovimentos(Vector3.zero);
+
+                    if (parryM.Update(command.defense))
+                    {
+                        estado = EstadoDePersonagem.aPasseio;
+                    }
+                break;
                 case EstadoDePersonagem.emCura:
-                    magic.Update(Control,Dados.PontosDeMana,mov.NoChao,dados);
+                    //magic.Update(Control,Dados.PontosDeMana,mov.NoChao,dados);
+                    magic.Update(command, Dados.PontosDeMana, mov.NoChao, dados);
+
                 break;
                 case EstadoDePersonagem.emAtk:
                     #region emAtk
                     if (!mov.NoChao)
-                        mov.AplicadorDeMovimentos(CommandReader.VetorDirecao(Control), CommandReader.ButtonDown(1, Control), dados.TemDoubleJump);
+                        //mov.AplicadorDeMovimentos(CommandReader.VetorDirecao(Control), CommandReader.ButtonDown(1, Control), dados.TemDoubleJump);
+                        mov.AplicadorDeMovimentos(command.move, command.startJump, dados.TemDoubleJump);
+
                     else
                         mov.AplicadorDeMovimentos(Vector3.Lerp(mov.Velocity.normalized,Vector3.zero,30*Time.deltaTime));
 
@@ -571,7 +639,8 @@ public class CharacterManager : MonoBehaviour
                 break;
                 case EstadoDePersonagem.emDano:
                     #region emDano
-                    if (emDano.Update(mov, CommandReader.VetorDirecao(Control)))
+                    //if (emDano.Update(mov, CommandReader.VetorDirecao(Control)))
+                    if (emDano.Update(mov, command.move))
                     {
                         if (tDamage.agendado)
                         {
@@ -603,12 +672,14 @@ public class CharacterManager : MonoBehaviour
                 break;
                 case EstadoDePersonagem.inDash:
                     #region inDash
-                    if (dash.Update(Mathf.Sign(transform.localScale.x),Mathf.Sign(CommandReader.VetorDirecao(Control).x)))
+                    //if (dash.Update(Mathf.Sign(transform.localScale.x),Mathf.Sign(CommandReader.VetorDirecao(Control).x)))
+                    if (dash.Update(Mathf.Sign(transform.localScale.x), Mathf.Sign(command.move.x)))
                     {
                         estado = EstadoDePersonagem.aPasseio;
                     }
 
-                    if (CommandReader.ButtonDown(0, Control))
+                    //if (CommandReader.ButtonDown(0, Control))
+                    if (command.attack)
                     {
                         dash.RetornarAoEstadoDeEspera();
                         estado = EstadoDePersonagem.aPasseio;
@@ -619,7 +690,8 @@ public class CharacterManager : MonoBehaviour
                 case EstadoDePersonagem.inCheckPoint:
                     #region inCheckPoint
 
-                    if (Mathf.Abs(CommandReader.VetorDirecao(GlobalController.g.Control).x) > 0.5f)
+                    //if (Mathf.Abs(CommandReader.VetorDirecao(GlobalController.g.Control).x) > 0.5f)
+                    if (Mathf.Abs(command.move.x) > 0.5f)
                     {
                         particulaSaiuDoDescanso.gameObject.SetActive(true);
                         particulaSaiuDoDescanso.Play();
@@ -631,7 +703,8 @@ public class CharacterManager : MonoBehaviour
                 break;
                 case EstadoDePersonagem.derrotado:
                     #region derrotado
-                    if (emDano.Update(mov, CommandReader.VetorDirecao(Control)))
+                    //if (emDano.Update(mov, CommandReader.VetorDirecao(Control)))
+                    if (emDano.Update(mov, command.move))
                     {
                         mov.AplicadorDeMovimentos(Vector3.zero, false, false);
                         particulaDoMorrendo.SetActive(true);
@@ -704,5 +777,6 @@ public enum EstadoDePersonagem
     emCura,
     downArrowActive,
     inDash,
-    inCheckPoint
+    inCheckPoint,
+    defesa
 }

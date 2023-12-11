@@ -4,12 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - attackCollisor
-  - triggerGeral
-  - Enemy
-  - startBlock
+  - colorContainer
   - endBlock
+  - startBlock
   - musicName
+  - Enemy
+  - attackCollisor
   layers:
   - Default
   - TransparentFX
@@ -20,11 +20,11 @@ TagManager:
   - 
   - 
   - chao
-  - dinheiro
-  - heroi
-  - andadorDeInimigo
-  - containerDeInimigos
-  - enemyDamageSender
+  - b
+  - c
+  - d
+  - 
+  - 
   - 
   - 
   - 

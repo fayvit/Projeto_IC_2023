@@ -313,7 +313,7 @@ public class Camera2D : MonoBehaviour
 
         new MyInvokeMethod().InvokeAoFimDoQuadro(() =>
         {
-            Debug.Log("invoke");
+            //Debug.Log("invoke");
             SetarLimitantesTransitorio();
             limitantes = lerpLimitantes;
         });
@@ -501,7 +501,7 @@ public class Camera2D : MonoBehaviour
 
         if (useLimitsCam)
         {
-            Debug.Log("Estou usando limites "+limitantes);
+            //Debug.Log("Estou usando limites "+limitantes);
             newPos = new Vector3(Mathf.Clamp(newPos.x, limitantes.xMin, limitantes.xMax),
                 Mathf.Clamp(newPos.y, limitantes.yMin, limitantes.yMax),
                 newPos.z

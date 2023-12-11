@@ -30,6 +30,7 @@ public class MovimentacaoBasica
     private bool estavaNoChao;
     private bool retornoDonoChao;
 
+    public bool AplicandoForca => aplicandoForca;
     public Vector3 Velocity
     {
         get { return m_Rigidbody2D.velocity;}
@@ -160,18 +161,26 @@ public class MovimentacaoBasica
             myJump.IniciaAplicaPulo(m_Rigidbody2D.transform.position.y);
     }
 
+    string keyRetornaAplicandoForca;
     public void ApplyForce(Vector2 f,float tempoAplicando = 0.25f)
     {
         aplicandoForca = true;
-
-        m_Rigidbody2D.AddForce(f);
-        GameController.g.StartCoroutine(RetornaAplicandoForca(tempoAplicando));
+        keyRetornaAplicandoForca = System.Guid.NewGuid().ToString();
+        
+        m_Rigidbody2D.velocity = Vector2.zero;
+        new MyInvokeMethod().InvokeAoFimDoQuadro(() =>
+        {
+            m_Rigidbody2D.AddForce(f);
+        });
+        GameController.g.StartCoroutine(RetornaAplicandoForca(tempoAplicando, keyRetornaAplicandoForca));
     }
 
-    IEnumerator RetornaAplicandoForca(float t)
+    IEnumerator RetornaAplicandoForca(float t, string key)
     {
         yield return new WaitForSeconds(t);
-        aplicandoForca = false;
+        
+        if (key == keyRetornaAplicandoForca)
+            aplicandoForca = false;
     }
 
     public void ChangeSpeed(float newSpeed)
