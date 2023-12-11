@@ -10,6 +10,8 @@ TagManager:
   - musicName
   - Enemy
   - attackCollisor
+  - triggerGeral
+  - ColisorCamera
   layers:
   - Default
   - TransparentFX
