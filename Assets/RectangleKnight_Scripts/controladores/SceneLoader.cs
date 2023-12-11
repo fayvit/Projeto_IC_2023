@@ -422,7 +422,17 @@ public enum NomesCenas
     GrandesCorredeiras_b,
     GrandesCorredeiras_c,
     CaminhoDoAquiferoParaPontal,
-    CaminhoDaGargantaParaPOntal
+    CaminhoDaGargantaParaPOntal, 
+    Teste1,
+    Teste2,
+    area1,
+    area1sala1,
+    area1sala2,
+    area1sala3,
+    area1sala4,
+    area1sala5,
+    area1sala6,
+    area1sala7
 }
 
 public enum NomesCenasEspeciais

@@ -3,7 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - colorContainer
+  - endBlock
+  - startBlock
+  - musicName
+  - Enemy
+  - attackCollisor
   layers:
   - Default
   - TransparentFX
@@ -13,7 +19,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - "ch\xE3o"
   - 
   - 
   - 

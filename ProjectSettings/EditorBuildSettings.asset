@@ -179,4 +179,34 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/area2/CaminhoDoAquiferoParaPontal.unity
     guid: dfe6b79333f96ed4d9578e5a191ca4a8
+  - enabled: 1
+    path: Assets/Fases 2023/Teste1.unity
+    guid: e38a51f88033f9841844eb0012ec2a6c
+  - enabled: 1
+    path: Assets/Fases 2023/Teste2.unity
+    guid: b2a55dd22e83bf946b1017f30ece3764
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1.unity
+    guid: bbb57b9b253f24f4ea4ff602a0a8ba1b
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala1.unity
+    guid: ccdbdf078725b974a83240bee1a84a20
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala2.unity
+    guid: 4b8ebfc7b730fa04c8454f2a812dfa5e
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala3.unity
+    guid: fb780e0fa057bec42af12295a5a7e78f
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala4.unity
+    guid: 9f6cccda6682cc447b2d308ef1317615
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala5.unity
+    guid: 9b5c11c830088e349b26136e50372948
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala6.unity
+    guid: 1f74941b74f39634f9947f2decc0b9c6
+  - enabled: 1
+    path: Assets/Fases 2023/Cenas/area1sala7.unity
+    guid: c6bebb1452db4594999a2ef5898231de
   m_configObjects: {}
